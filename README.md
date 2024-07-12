@@ -1,7 +1,7 @@
 # bigdata_employment_visualization
 
 #### 介绍
-我们自己的项目仓库
+基于hadoop和spark的招聘可视化数据大屏项目
 
 
 ### 项目参考地址

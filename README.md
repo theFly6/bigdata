@@ -4,9 +4,14 @@
 我们自己的项目仓库
 
 
-项目文档地址：
-【腾讯文档】【数据】技术方案设计模版-通用版
-https://docs.qq.com/doc/DT0t2VHVZcGxSTFlw
+### 项目参考地址
+参考网站：[计算机毕业设计Hadoop+Spark招聘推荐系统 招聘可视化-CSDN博客](https://blog.csdn.net/spark2022/article/details/140088344)
+
+数据集：[计算机类人才招聘信息数据集_数据集-飞桨AI Studio星河社区 (baidu.com)](https://aistudio.baidu.com/datasetdetail/108664)
+
+项目地址：https://gitee.com/waiZuiDragonKing-78/bigdata_employment_visualization.git
+
+开发文档：[https://docs.qq.com/doc/DT0t2VHVZcGxSTFlw](
 
 #### 软件架构
 软件架构说明

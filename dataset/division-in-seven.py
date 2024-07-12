@@ -14,7 +14,7 @@ min_rows = 20000
 max_rows = 40000
 
 # 读取 CSV 文件
-df = pd.read_csv(csv_file_path)
+df = pd.read_csv(csv_file_path, encoding='utf8')
 
 # 检查 CSV 文件是否有足够的行
 if len(df) < min_rows:
@@ -27,7 +27,8 @@ else:
       # 随机抽取数据
       N = n=random.randint(min_rows, max_rows)
       sampled_data = df.sample(N, replace=False)
-      sampled_data.to_csv(files[i], index=False, mode='w', header=not os.path.exists(files[i]))
+    #   print(sampled_data.columns)
+      sampled_data.to_csv(files[i],  mode='w', encoding="utf8", index=False)
       print(f"数据已写入 {files[i]}, len {N}")
 
 print("数据抽取和分文件完成。")

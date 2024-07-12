@@ -11,6 +11,8 @@
 
 项目地址：https://gitee.com/waiZuiDragonKing-78/bigdata_employment_visualization.git
 
+需求分析文档： https://docs.qq.com/doc/DT3lIV0hDQVl5RXpN
+
 开发文档：[https://docs.qq.com/doc/DT0t2VHVZcGxSTFlw](https://gitee.com/link?target=https%3A%2F%2Fdocs.qq.com%2Fdoc%2FDT0t2VHVZcGxSTFlw)
 
 #### 软件架构

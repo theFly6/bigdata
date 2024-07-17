@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: bigdata
+  controller:
+  datasource:
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.72.173:3306/recruitDB
+    username: root
+    password: 123
+  jpa:
+    show-sql: true
+    hibernate:
+      dialect:
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server.address: 192.168.72.24
+#server.address: 0.0.0.0
+server.port: 8081

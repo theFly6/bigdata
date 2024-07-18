@@ -16,6 +16,6 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-server.address: 192.168.72.24
+#server.address: 192.168.72.24
 #server.address: 0.0.0.0
 server.port: 8081

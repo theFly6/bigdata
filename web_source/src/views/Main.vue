@@ -56,11 +56,13 @@ import AsideVue from '@/components/Aside.vue';
 
 .el-main {
   padding: 0;
+  overflow: hidden;
 }
 
 .el-container {
   height: 100%;
   margin: 0;
   padding: 0;
+  /* overflow: hidden; */
 }
 </style>

@@ -1,8 +1,5 @@
 package com.example.demo.entity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 @Data
 @Entity
@@ -10,7 +7,10 @@ import lombok.Data;
 public class Job_salary_table {
 
     @Id
-    @Column(name = "time")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id")
+    private Integer id;
+    @Column(name = "dt")
     private Integer time;
 
     @Column(name = "job", length = 255)

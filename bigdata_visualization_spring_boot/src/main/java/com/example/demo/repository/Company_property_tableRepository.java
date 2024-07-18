@@ -11,6 +11,6 @@ import java.util.ArrayList;
 public interface Company_property_tableRepository extends JpaRepository<Company_property_table,String> {
     @Query(value = "select * from company_property_table where time=%?1",nativeQuery = true)
     ArrayList findAllByTime(String s);
-    @Query(value = "select * from company_property_table where time=%?1",nativeQuery = true)
+    @Query(value = "select * from company_property_table where time=%:s%",nativeQuery = true)
     Page<Company_property_table> listAll(String s, Pageable pageable);
 }

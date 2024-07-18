@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.*;
+import com.example.demo.repository.Company_scale_tableRepository;
 import com.example.demo.service.AllService;
 import com.example.demo.utils.Result;
 import com.example.demo.vo.InterfaceVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -32,6 +35,8 @@ public class AllController {
     }
     @RequestMapping("/companyScale")
     public Result<ArrayList> show_company_scale(@RequestParam("s") String s){
+        System.out.println("///////////////////////////////////");
+        System.out.println(s);
         String target = "20240"+s;
         return allService.show_company_scale(target);
 
@@ -69,9 +74,28 @@ public class AllController {
         return allService.show_company_property_table(interfaceVo);
 
     }
+    @Autowired
+    Company_scale_tableRepository company_scale_tableRepository;
     @RequestMapping("/companyScaleTable")
     public Result<Page<Company_scale_table>> show_company_scale_table(@RequestBody InterfaceVo interfaceVo){
-        return allService.show_company_scale_table(interfaceVo);
+        String s = "20240"+interfaceVo.s;
+        Integer page = interfaceVo.page;
+        Integer size = interfaceVo.size;
+        //System.out.println("***********************************");
+        System.out.println(s);
+        System.out.println(page);
+        System.out.println(size);
+        //System.out.println("***********************************");
+        Pageable pageable = PageRequest.of(page-1,size);
+        Page<Company_scale_table> result = company_scale_tableRepository.getBydt(s,pageable);
+        //System.out.println("***********************************");
+        System.out.println(result.getTotalElements());
+        System.out.println(result.stream());
+        //System.out.println("***********************************");
+        result.forEach(System.out::println);
+        //System.out.println("***********************************");
+        return Result.success(result);
+        //return allService.show_company_scale_table(interfaceVo);
 
     }
     @RequestMapping("/jobPostTable")

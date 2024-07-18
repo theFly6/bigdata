@@ -1,9 +1,6 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -12,7 +9,10 @@ import lombok.Data;
 public class Company_property_table {
 
     @Id
-    @Column(name = "time", length = 255)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id")
+    private Integer id;
+    @Column(name = "time")
     private String time;
 
     @Column(name = "guoqi")

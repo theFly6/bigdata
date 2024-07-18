@@ -10,6 +10,9 @@ import lombok.Data;
 public class City_job_table {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id")
+    private Integer id;
     @Column(name = "dt")
     private String dt;
 

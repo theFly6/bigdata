@@ -9,9 +9,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.ArrayList;
 
 public interface Company_scale_tableRepository extends JpaRepository<Company_scale_table,Integer> {
-    @Query(value = "select * from company_scale_table where dt=%?1 order by num desc",nativeQuery = true)
+    @Query(value = "select * from company_scale_table where dt= ?1 order by num desc",nativeQuery = true)
     ArrayList findAllByTime(String s);
 
-    @Query(value = "select * from company_scale_table where dt=%?1 order by num desc",nativeQuery = true)
-    Page<Company_scale_table> listAll(String s, Pageable pageable);
+    @Query(value = "select * from company_scale_table where dt like %:s% order by num desc",nativeQuery = true)
+    Page<Company_scale_table> getBydt(String s, Pageable pageable);
 }

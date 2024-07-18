@@ -9,5 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface OrigindataRepository extends JpaRepository<Origindata,String> {
     @Query(value = "select * from origin_data where dt=%?1",nativeQuery = true)
-    Result<Page<Origindata>> findAllByPage(String s, Pageable pageable);
+    Page<Origindata> findAllByPage(String s, Pageable pageable);
+
+
 }

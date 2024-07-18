@@ -35,4 +35,6 @@ public interface AllService {
     Result<Page<Words_cloud>> show_word_cloud_table(InterfaceVo interfaceVo);
 
     Result<Page<Origindata>> show_origin_table(InterfaceVo interfaceVo);
+
+
 }

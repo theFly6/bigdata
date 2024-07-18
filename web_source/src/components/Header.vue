@@ -1,7 +1,7 @@
 <template>
 
-  <el-menu class="el-menu-demo" mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="#fff"
-    @select="handleSelect">
+  <el-menu class="el-menu-demo" mode="horizontal" background-color="#545c64" text-color="#fff"
+    active-text-color="#ffd04b" @select="handleSelect" :default-active="'1'">
     <el-button @click="menuStore.shiftMenu">
       <el-icon>
         <Switch />

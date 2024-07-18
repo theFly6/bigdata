@@ -1,11 +1,12 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import Main from '../views/Main.vue'
 import DataBoard from '../views/DataBoard.vue'
 import Tables from '../views/Tables.vue'
 import Else from '../views/Else.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory('/'),
+  // history: createWebHashHistory(),
   routes: [
     {
       name: 'main', path: '/', component: Main, redirect: '/data-board',

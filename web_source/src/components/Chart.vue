@@ -5,7 +5,7 @@
 
 <script lang="ts" setup>
 // https://echarts.apache.org/examples/zh/editor.html?c=data-transform-sort-bar
-import { ref, reactive, onMounted, onUnmounted, nextTick } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import * as echarts from 'echarts';
 import "echarts-wordcloud"
 
@@ -15,24 +15,13 @@ let chartInstance = null;
 const props = defineProps(['option'])
 const option = ref(props.option)
 
-onMounted(async () => {
-  chartInstance = echarts.init(chartDom.value, 'dark')
-  console.log("???", props.option)
+onMounted(() => {
+  chartInstance = echarts.init(chartDom.value)
+  // console.log("Chart onMounted", JSON.stringify(option.value))
   option && chartInstance.setOption(option.value)
 })
 
 
 </script>
 
-<style scoped>
-.chart-item {
-  width: 100%;
-  height: 400px;
-  margin: 0 auto;
-  background-color: rgb(16, 12, 42);
-}
-
-.chart-item div {
-  margin: 0 auto !important;
-}
-</style>
+<style scoped></style>

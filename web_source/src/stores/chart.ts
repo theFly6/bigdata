@@ -5,7 +5,16 @@ import { ref } from 'vue'
 // 用于保证输入url与左侧菜单样式同步
 export const useChartStore = defineStore('chart', () => {
   const chartsOptions = ref(Array(6))
+  const chartsOptionsReady = ref(Array(6).fill(false))
   chartsOptions.value[0] = {
+    title: {
+      text: "城市职位排行Top10",
+      x: "center",
+      top: "5%",
+      textStyle: {
+        color: "#255a75"
+      }
+    },
     dataset: [
       {
         dimensions: ['dt', 'city_name', 'job_num'],
@@ -18,6 +27,9 @@ export const useChartStore = defineStore('chart', () => {
         }
       }
     ],
+    grid: {
+      left: "15%"
+    },
     xAxis: {
       type: 'category',
       axisLabel: { interval: 0, rotate: 30 }
@@ -30,42 +42,40 @@ export const useChartStore = defineStore('chart', () => {
     }
   }
 
-  function setCityJob(s: string) {
-    axios({
-      url: "http://192.168.72.24:8081/show/cityJob",
-      params: { s: s },
+  async function getP1(s: string) {
+    const res1 = await axios({
+      url: "http://www.recruit.api:8081/show/cityJob",
+      params: { s },
       method: "POST"
-    }).then((res: any) => {
-      chartsOptions.value[0].dataset[0].source = res.data.data
-      console.log("@@@", res.data.data)
     })
+    chartsOptions.value[0].dataset[0].source = res1.data.data
+    chartsOptionsReady.value[0] = true
+    console.log("1 cityjob done!")
   }
 
   chartsOptions.value[1] = {
+    title: {
+      text: "公司规模分析",
+      x: "center",
+      top: "5%",
+      textStyle: {
+        color: "#255a75"
+      }
+    },
     dataset: {
-      source: [
-        ['score', 'amount', 'product'],
-        [89.3, 58212, 'Matcha Latte'],
-        [57.1, 78254, 'Milk Tea'],
-        [74.4, 41032, 'Cheese Cocoa'],
-        [50.1, 12755, 'Cheese Brownie'],
-        [89.7, 20145, 'Matcha Cocoa'],
-        [68.1, 79146, 'Tea'],
-        [19.6, 91852, 'Orange Juice'],
-        [10.6, 101852, 'Lemon Juice'],
-        [32.7, 20112, 'Walnut Brownie']
-      ]
+      source: []
     },
     grid: { containLabel: true },
-    xAxis: { name: 'amount' },
+    xAxis: { name: '' },
     yAxis: { type: 'category' },
     visualMap: {
+      show: false,
       orient: 'horizontal',
+      bottom: "7%",
       left: 'center',
       min: 10,
       max: 100,
       text: ['High Score', 'Low Score'],
-      // Map the score column to color
       dimension: 0,
       inRange: {
         color: ['#65B581', '#FFCE34', '#FD665F']
@@ -75,72 +85,100 @@ export const useChartStore = defineStore('chart', () => {
       {
         type: 'bar',
         encode: {
-          // Map the "amount" column to X axis.
-          x: 'amount',
-          // Map the "product" column to Y axis
-          y: 'product'
+          x: 'scale_num',
+          y: 'scale_type'
         }
       }
     ]
   }
+  async function getP2(s: string) {
+    const res2 = await axios({
+      url: "http://www.recruit.api:8081/show/companyScale",
+      params: { s: s },
+      method: "POST"
+    })
+    chartsOptions.value[1].dataset.source = [["score", "scale_num", "scale_type"]]
+    res2.data.data.map((v: any,) => {
+      const tmp = [Number((Math.random() * 90).toFixed(3) + 10), v[2], v[1]]
+      chartsOptions.value[1].dataset.source.push(tmp)
+    })
+    chartsOptionsReady.value[1] = true
+    console.log("2 companysize done!")
+  }
+
   chartsOptions.value[2] = {
     title: {
-      text: 'Funnel',
-      left: 'left',
-      top: 'bottom'
+      text: "职位薪资排行",
+      left: "30%",
+      top: "5%",
+      textStyle: {
+        color: "#255a75"
+      }
     },
     grid: {
       width: "100%",
       heigth: "auto"
     },
-    tooltip: {
-      trigger: 'item',
-      formatter: '{a} <br/>{b} : {c}%'
-    },
-    toolbox: {
-      orient: 'vertical',
-      top: 'center',
-      feature: {
-        dataView: { readOnly: false },
-        restore: {},
-        saveAsImage: {}
-      }
-    },
     legend: {
+      show: false,
       orient: 'vertical',
-      left: 'left',
-      data: ['Show', 'Click', 'Visit', 'Inquiry', 'Order']
+      bottom: "10%",
+      left: '10%',
+      // data: ['Show', 'Click', 'Visit', 'Inquiry', 'Order']
     },
     series: [
       {
         name: 'Funnel',
         type: 'funnel',
         width: '60%',
-        height: '70%',
-        left: '20%',
-        top: '15%',
-        data: [
-          { value: 60, name: 'Visit' },
-          { value: 30, name: 'Inquiry' },
-          { value: 10, name: 'Order' },
-          { value: 80, name: 'Click' },
-          { value: 100, name: 'Show' }
-        ]
+        height: '75%',
+        left: '10%',
+        top: '18%',
+        data: []
       },
     ]
   };
+  async function getP3(s: string) {
+    const res3 = await axios({
+      url: "http://www.recruit.api:8081/show/jobSalary",
+      params: { s: s },
+      method: "POST"
+    })
+    chartsOptions.value[2].series[0].data = []
+    res3.data.data.map((v: any) => {
+      chartsOptions.value[2].series[0].data.push({
+        name: v[1],
+        value: v[2]
+      })
+    })
+    chartsOptionsReady.value[2] = true
+    console.log("3 jobsalary done!")
+  }
+
+  // https://echarts.apache.org/examples/zh/editor.html?c=pie-doughnut&version=5.5.1
   chartsOptions.value[3] = {
     tooltip: {
       trigger: 'item'
     },
     legend: {
-      top: '5%',
+      // data: ['国企', '民营', '外资', '合资', '上市', '创业', '事业单位'],
+      bottom: '10%',
       left: 'center'
+    },
+    title: {
+      text: "公司性质分析",
+      x: "center",
+      textStyle: {
+        color: "#255a75"
+      }
     },
     series: [
       {
-        name: 'Access From',
+        top: "-20%",
+        left: "center",
+        name: '公司性质分析表',
         type: 'pie',
+        width: "60%",
         radius: ['40%', '70%'],
         avoidLabelOverlap: false,
         label: {
@@ -158,41 +196,83 @@ export const useChartStore = defineStore('chart', () => {
           show: false
         },
         data: [
-          { value: 1048, name: 'Search Engine' },
-          { value: 735, name: 'Direct' },
-          { value: 580, name: 'Email' },
-          { value: 484, name: 'Union Ads' },
-          { value: 300, name: 'Video Ads' }
+          { value: 1, name: '国企' },
+          { value: 1, name: '民营' },
+          { value: 1, name: '外资' },
+          { value: 1, name: '合资' },
+          { value: 1, name: '上市' },
+          { value: 1, name: '创业' },
+          { value: 1, name: '事业单位' },
         ]
       }
     ]
+  };
+  async function getP4(s: string) {
+    const res4 = await axios({
+      url: "http://www.recruit.api:8081/show/companyProperty",
+      params: { s: s },
+      method: "POST"
+    })
+    console.log('@@@4', chartsOptions.value[3].series[0].data)
+    res4.data.data[0].slice(1, -1).map((v: number, i: number) => {
+      chartsOptions.value[3].series[0].data[i].value = v
+    })
+    chartsOptionsReady.value[3] = true
+    console.log("4 companyproperty done!")
   }
+
   chartsOptions.value[4] = {
+    title: {
+      text: "近期职位发布数量分析",
+      x: "center",
+      textStyle: {
+        color: "#255a75"
+      }
+    },
     xAxis: {
       type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      data: []
     },
     yAxis: {
       type: 'value'
     },
+    grid: {
+      left: "center",
+      height: "60%",
+      width: "60%"
+    },
     series: [
       {
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        data: [],
         type: 'line',
         smooth: true
       }
     ]
   };
+  async function getP5(s: string) {
+    const res5 = await axios({
+      url: "http://www.recruit.api:8081/show/jobPost",
+      params: { s },
+      method: "POST"
+    })
+    chartsOptions.value[4].series[0].data = []
+    chartsOptions.value[4].xAxis.data = []
+    res5.data.data.map((v: any, i: number) => {
+      chartsOptions.value[4].series[0].data.push(v[1])
+      chartsOptions.value[4].xAxis.data.push(v[0])
+    })
+    chartsOptionsReady.value[4] = true
+    console.log("5 jobPost done!")
+  }
+
   chartsOptions.value[5] = {
     title: {
-      text: '词云展示',
+      text: '职位学历要求词云',
       link: 'https://www.baidu.com/s?wd=' + encodeURIComponent('ECharts'),
-      x: 'left',
+      x: 'center',
       textStyle: {
-        fontSize: 23,
-        color: 'rgba(255, 255, 255, 0.8)'
+        color: '#255a75'
       }
-
     },
     tooltip: {
       show: true
@@ -200,106 +280,49 @@ export const useChartStore = defineStore('chart', () => {
     series: [{
       name: '热点分析',
       type: 'wordCloud',
-      textPadding: 0,
-      autoSize: {
-        enable: true,
-        minSize: 6
-      },
+      shape: 'circle',
+      textPadding: 5,
+      sizeRange: [20, 60],
       textStyle: {
-        normal: {
-          color: function () {
-            return 'rgb(' + [
-              Math.round(Math.random() * 105) + 150,
-              Math.round(Math.random() * 105) + 150,
-              Math.round(Math.random() * 105) + 150
-            ].join(',') + ')';
-          }
+        color: function () {
+          return 'rgb(' + [
+            Math.round(Math.random() * 155),
+            Math.round(Math.random() * 155),
+            Math.round(Math.random() * 155)
+          ].join(',') + ')';
         },
         emphasis: {
-          shadowBlur: 10,
+          shadowBlur: 3,
           shadowColor: '#333'
         }
       },
-      data: [{
-        name: "Jayfee",
-        value: 666
-      }, {
-        name: "Nancy",
-        value: 520
-      }]
+      data: []
     }]
-  };
-  var JosnList = [{
-    name: "Jayfee",
-    value: 666
-  }, {
-    name: "Nancy",
-    value: 520
-  }, {
-    name: "生活资源",
-    value: "999"
-  }, {
-    name: "供热管理",
-    value: "888"
-  }, {
-    name: "供气质量",
-    value: "777"
-  }, {
-    name: "生活用水管理",
-    value: "688"
-  }, {
-    name: "一次供水问题",
-    value: "588"
-  }, {
-    name: "交通运输",
-    value: "516"
-  }, {
-    name: "城市交通",
-    value: "515"
-  }, {
-    name: "环境保护",
-    value: "483"
-  }, {
-    name: "房地产管理",
-    value: "462"
-  }, {
-    name: "城乡建设",
-    value: "449"
-  }, {
-    name: "社会保障与福利",
-    value: "429"
-  }, {
-    name: "社会保障",
-    value: "407"
-  }, {
-    name: "文体与教育管理",
-    value: "406"
-  }, {
-    name: "公共安全",
-    value: "406"
-  }, {
-    name: "公交运输管理",
-    value: "386"
-  }, {
-    name: "出租车运营管理",
-    value: "385"
-  }, {
-    name: "供热管理",
-    value: "375"
-  }, {
-    name: "市容环卫",
-    value: "355"
-  }, {
-    name: "自然资源管理",
-    value: "355"
-  }, {
-    name: "粉尘污染",
-    value: "335"
-  }, {
-    name: "噪声污染",
-    value: "324"
-  }]
-  chartsOptions.value[5].series[0].data = JosnList;
-
-  return { chartsOptions, setCityJob }
+  }
+  async function getP6(s: string) {
+    const res6 = await axios({
+      url: "http://www.recruit.api:8081/show/wordCloud",
+      params: { s: s },
+      method: "POST"
+    })
+    const jobs = ["大专", "学士", "硕士", "博士", "无学历要求", "不限", "初中及以下", "中技", "中专", "高中"]
+    chartsOptions.value[5].series[0].data = []
+    res6.data.data[0].slice(0, -1).map((v: any, i: number) => {
+      chartsOptions.value[5].series[0].data.push({
+        name: jobs[i],
+        value: v
+      })
+    })
+    chartsOptionsReady.value[5] = true
+    console.log("6 wordcloud done!")
+  }
+  function setAllPharagraph(s: string) {
+    getP1(s)
+    getP2(s)
+    getP3(s)
+    getP4(s)
+    getP5(s)
+    getP6(s)
+  }
+  return { chartsOptions, setAllPharagraph, chartsOptionsReady }
 })

@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useTableStore } from '@/stores/table'
 
 // 用于保证输入url与左侧菜单样式同步
 export default function () {
@@ -15,6 +16,8 @@ export default function () {
     selectedMenuIndex.value = location.href.slice(-1)
   }
 
+  const tableStore = useTableStore()
+
   const handleSelect = (tableTypeID: string, keyPath: string[]) => {
     if (tableTypeID === "1")
       router.push("/data-board")
@@ -28,6 +31,8 @@ export default function () {
         }
       })
     selectedMenuIndex.value = tableTypeID
+    localStorage.setItem("tableTypeID", tableTypeID)
+    tableStore.getPage(tableTypeID)
   }
 
   return { selectedMenuIndex, handleSelect }

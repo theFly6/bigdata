@@ -10,8 +10,8 @@
           :label="colname.slice(0, 1).toUpperCase() + colname.slice(1)" />
       </template>
     </el-table>
-    <el-pagination :current-page="curPage" background layout="prev, pager, next" :total="tableStore.totalElements"
-      @current-change="getPageNum" />
+    <el-pagination :current-page="tableStore.curPage" background layout="prev, pager, next"
+      :total="tableStore.totalElements" @current-change="getPageNum" />
   </template>
 
 

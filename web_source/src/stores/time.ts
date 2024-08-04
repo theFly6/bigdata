@@ -15,15 +15,17 @@ export const useTimeStore = defineStore('time', () => {
 
   const chartStore = useChartStore()
   const tableStore = useTableStore()
-  watch(time, () => {
+  watch(time, () => { // 对用户选择查看的数据的时间进行监视
     chartStore.chartsOptionsReady.fill(false)
     const tableTypeID = localStorage.getItem("tableTypeID") as string
-    if (tableTypeID == '1')
+    if (tableTypeID == '1') // 如果当前是可视化看板则同步看板数据
       chartStore.setAllPharagraph(`${time.month}`)
     else if (tableTypeID == '3') {
-      // ...
+      // 如果是其它页面则进行其它操作
     } else {
-      tableStore.getPage(tableTypeID)
+      // 当前页面为表格页面时即获取此页面指定时间对应的指定数据
+      const page = Number(localStorage.getItem("pageNum")) || 1
+      tableStore.getPage(tableTypeID, page)
     }
   })
   return { time, timeMsg, setTime }

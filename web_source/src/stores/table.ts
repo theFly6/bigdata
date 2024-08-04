@@ -18,6 +18,7 @@ export const useTableStore = defineStore('table', () => {
 
   const totalPage = ref(1)
   const totalElements = ref(1)
+  const curPage = ref(1)
   const data = ref([])
   const timeStore = useTimeStore()
   async function getPage(tableType = 'a', page = 1) {
@@ -27,10 +28,11 @@ export const useTableStore = defineStore('table', () => {
       page: page,
       size: 13
     })
+    curPage.value = page
     totalElements.value = res.data.data.totalElements
     data.value = res.data.data.content
     console.log('???', res.data.data, Object.keys(data.value[0]), '???')
   }
 
-  return { tablesData, totalPage, getPage, totalElements, data }
+  return { tablesData, totalPage, getPage, totalElements, data, curPage }
 })

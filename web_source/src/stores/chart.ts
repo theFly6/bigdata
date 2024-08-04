@@ -2,7 +2,7 @@ import axios from 'axios';
 import { defineStore } from 'pinia';
 import { ref } from 'vue'
 
-// 用于保证输入url与左侧菜单样式同步
+// 六个可视化图表展示页面
 export const useChartStore = defineStore('chart', () => {
   const chartsOptions = ref(Array(6))
   const chartsOptionsReady = ref(Array(6).fill(false))
@@ -40,8 +40,7 @@ export const useChartStore = defineStore('chart', () => {
       encode: { x: 'city_name', y: 'job_num' },
       datasetIndex: 1
     }
-  }
-
+  } // 图表1的异步响应式数据及其获取函数
   async function getP1(s: string) {
     const res1 = await axios({
       url: "http://www.recruit.api:8081/show/cityJob",
@@ -52,7 +51,6 @@ export const useChartStore = defineStore('chart', () => {
     chartsOptionsReady.value[0] = true
     console.log("1 cityjob done!")
   }
-
   chartsOptions.value[1] = {
     title: {
       text: "公司规模分析",
@@ -90,7 +88,7 @@ export const useChartStore = defineStore('chart', () => {
         }
       }
     ]
-  }
+  } // 图表2的异步响应式数据及其获取函数
   async function getP2(s: string) {
     const res2 = await axios({
       url: "http://www.recruit.api:8081/show/companyScale",
@@ -104,8 +102,8 @@ export const useChartStore = defineStore('chart', () => {
     })
     chartsOptionsReady.value[1] = true
     console.log("2 companysize done!")
-  }
-
+  } // 图表3……6的异步响应式数据及其获取函数↓
+  // #region
   chartsOptions.value[2] = {
     title: {
       text: "职位薪资排行",
@@ -154,6 +152,7 @@ export const useChartStore = defineStore('chart', () => {
     chartsOptionsReady.value[2] = true
     console.log("3 jobsalary done!")
   }
+
 
   // https://echarts.apache.org/examples/zh/editor.html?c=pie-doughnut&version=5.5.1
   chartsOptions.value[3] = {
@@ -282,7 +281,7 @@ export const useChartStore = defineStore('chart', () => {
       type: 'wordCloud',
       shape: 'circle',
       textPadding: 5,
-      sizeRange: [20, 60],
+      sizeRange: [20, 80],
       textStyle: {
         color: function () {
           return 'rgb(' + [
@@ -307,15 +306,17 @@ export const useChartStore = defineStore('chart', () => {
     })
     const jobs = ["大专", "学士", "硕士", "博士", "无学历要求", "不限", "初中及以下", "中技", "中专", "高中"]
     chartsOptions.value[5].series[0].data = []
-    res6.data.data[0].slice(0, -1).map((v: any, i: number) => {
+    res6.data.data[0].slice(0, -2).map((v: any, i: number) => {
       chartsOptions.value[5].series[0].data.push({
         name: jobs[i],
         value: v
       })
     })
     chartsOptionsReady.value[5] = true
+    console.log(chartsOptions.value[5].series[0])
     console.log("6 wordcloud done!")
   }
+  // #endregion
   function setAllPharagraph(s: string) {
     getP1(s)
     getP2(s)

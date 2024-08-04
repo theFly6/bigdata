@@ -32,6 +32,7 @@ export default function () {
       })
     selectedMenuIndex.value = tableTypeID
     localStorage.setItem("tableTypeID", tableTypeID)
+    localStorage.setItem("pageNum", '1')
     tableStore.getPage(tableTypeID)
   }
 

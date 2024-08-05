@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
 
     #url: jdbc:mysql://127.0.0.1:3306/recruitdb
-    url: jdbc:mysql://192.168.72.173:3306/recruitDB
+    url: jdbc:mysql://hadoop1:3306/recruitDB
     username: root
     password: 123
     #password: 123456
